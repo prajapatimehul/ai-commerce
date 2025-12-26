@@ -10,7 +10,7 @@ export async function fetchImageAsFile(imageUrl: string): Promise<File> {
   }
 
   const blob = await response.blob();
-  const filename = imageUrl.split('/').pop() || 'tshirt.jpg';
+  const filename = imageUrl.split("/").pop() || "tshirt.jpg";
 
   return new File([blob], filename, { type: blob.type });
 }
@@ -24,13 +24,13 @@ export async function fetchImageAsFile(imageUrl: string): Promise<File> {
 export async function compressImage(
   file: File,
   maxWidth = 1280,
-  quality = 0.75
+  quality = 0.75,
 ): Promise<File> {
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
     if (!ctx) {
-      reject(new Error('Could not get canvas context'));
+      reject(new Error("Could not get canvas context"));
       return;
     }
 
@@ -54,21 +54,21 @@ export async function compressImage(
           if (blob) {
             resolve(
               new File([blob], file.name, {
-                type: 'image/jpeg',
-                lastModified: Date.now()
-              })
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              }),
             );
           } else {
             resolve(file);
           }
         },
-        'image/jpeg',
-        quality
+        "image/jpeg",
+        quality,
       );
     };
 
     img.onerror = () => {
-      reject(new Error('Failed to load image'));
+      reject(new Error("Failed to load image"));
     };
 
     img.src = URL.createObjectURL(file);
@@ -86,7 +86,7 @@ export async function fileToBase64(file: File): Promise<string> {
       resolve(result);
     };
     reader.onerror = () => {
-      reject(new Error('Failed to read file'));
+      reject(new Error("Failed to read file"));
     };
     reader.readAsDataURL(file);
   });
@@ -97,11 +97,11 @@ export async function fileToBase64(file: File): Promise<string> {
  */
 export function validateImageFormat(file: File): boolean {
   const supportedTypes = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'image/webp',
-    'image/gif'
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/gif",
   ];
   return supportedTypes.includes(file.type.toLowerCase());
 }

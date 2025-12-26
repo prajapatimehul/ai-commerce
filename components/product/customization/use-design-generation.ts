@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import type { DesignGenerationResponse } from 'lib/types/design';
+import { useState } from "react";
+import type { DesignGenerationResponse } from "lib/types/design";
 
 interface UseDesignGenerationProps {
   tshirtImageUrl: string;
@@ -12,17 +12,20 @@ interface UseDesignGenerationProps {
 export function useDesignGeneration({
   tshirtImageUrl,
   onSuccess,
-  onError
+  onError,
 }: UseDesignGenerationProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [generatedDesignUrl, setGeneratedDesignUrl] = useState<string | null>(null);
-  const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const [generatedDesignUrl, setGeneratedDesignUrl] = useState<string | null>(
+    null,
+  );
+  const [abortController, setAbortController] =
+    useState<AbortController | null>(null);
 
   const generateDesign = async (prompt: string) => {
     if (!prompt.trim()) {
-      const errorMsg = 'Please enter a design description';
+      const errorMsg = "Please enter a design description";
       setError(errorMsg);
       onError?.(errorMsg);
       return;
@@ -49,26 +52,26 @@ export function useDesignGeneration({
 
     try {
       const formData = new FormData();
-      formData.append('prompt', prompt);
-      formData.append('tshirtImageUrl', tshirtImageUrl);
+      formData.append("prompt", prompt);
+      formData.append("tshirtImageUrl", tshirtImageUrl);
 
-      const response = await fetch('/api/generate-design', {
-        method: 'POST',
+      const response = await fetch("/api/generate-design", {
+        method: "POST",
         body: formData,
-        signal: controller.signal
+        signal: controller.signal,
       });
 
       clearInterval(progressInterval);
 
       if (!response.ok) {
         const errorData: DesignGenerationResponse = await response.json();
-        throw new Error(errorData.error || 'Failed to generate design');
+        throw new Error(errorData.error || "Failed to generate design");
       }
 
       const data: DesignGenerationResponse = await response.json();
 
       if (!data.success || !data.designUrl) {
-        throw new Error(data.error || 'Failed to generate design');
+        throw new Error(data.error || "Failed to generate design");
       }
 
       setProgress(100);
@@ -77,12 +80,13 @@ export function useDesignGeneration({
     } catch (err) {
       clearInterval(progressInterval);
 
-      if (err instanceof Error && err.name === 'AbortError') {
-        setError('Generation cancelled');
+      if (err instanceof Error && err.name === "AbortError") {
+        setError("Generation cancelled");
         return;
       }
 
-      const errorMsg = err instanceof Error ? err.message : 'Unknown error occurred';
+      const errorMsg =
+        err instanceof Error ? err.message : "Unknown error occurred";
       setError(errorMsg);
       onError?.(errorMsg);
     } finally {
@@ -115,6 +119,6 @@ export function useDesignGeneration({
     isGenerating,
     progress,
     error,
-    generatedDesignUrl
+    generatedDesignUrl,
   };
 }

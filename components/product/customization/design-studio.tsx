@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import clsx from 'clsx';
-import { Fragment, useState } from 'react';
-import { useDesignGeneration } from './use-design-generation';
-import type { CustomDesign } from 'lib/types/design';
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
+import { Fragment, useState } from "react";
+import { useDesignGeneration } from "./use-design-generation";
+import type { CustomDesign } from "lib/types/design";
 
 interface DesignStudioProps {
   isOpen: boolean;
@@ -18,20 +18,26 @@ export function DesignStudio({
   isOpen,
   onClose,
   tshirtImageUrl,
-  onDesignComplete
+  onDesignComplete,
 }: DesignStudioProps) {
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
 
-  const { generateDesign, cancelGeneration, isGenerating, progress, error, generatedDesignUrl } =
-    useDesignGeneration({
-      tshirtImageUrl,
-      onSuccess: (designUrl, userPrompt) => {
-        // Design generated successfully
-      },
-      onError: (errorMsg) => {
-        console.error('Design generation error:', errorMsg);
-      }
-    });
+  const {
+    generateDesign,
+    cancelGeneration,
+    isGenerating,
+    progress,
+    error,
+    generatedDesignUrl,
+  } = useDesignGeneration({
+    tshirtImageUrl,
+    onSuccess: (designUrl, userPrompt) => {
+      // Design generated successfully
+    },
+    onError: (errorMsg) => {
+      console.error("Design generation error:", errorMsg);
+    },
+  });
 
   const handleGenerate = () => {
     generateDesign(prompt);
@@ -43,7 +49,7 @@ export function DesignStudio({
     const design: CustomDesign = {
       designUrl: generatedDesignUrl,
       prompt: prompt,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     onDesignComplete(design);
@@ -54,7 +60,7 @@ export function DesignStudio({
     if (isGenerating) {
       cancelGeneration();
     }
-    setPrompt('');
+    setPrompt("");
     onClose();
   };
 
@@ -103,7 +109,10 @@ export function DesignStudio({
             <div className="flex-1 space-y-4 overflow-auto">
               {/* Prompt Input */}
               <div>
-                <label htmlFor="design-prompt" className="mb-2 block text-sm font-medium">
+                <label
+                  htmlFor="design-prompt"
+                  className="mb-2 block text-sm font-medium"
+                >
                   Describe your design
                 </label>
                 <textarea
@@ -123,7 +132,12 @@ export function DesignStudio({
 
               {/* Progress Bar */}
               {isGenerating && (
-                <div className="space-y-2" role="status" aria-live="polite" aria-atomic="true">
+                <div
+                  className="space-y-2"
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                >
                   <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
                     <div
                       className="h-full bg-blue-600 transition-all duration-200 ease-out"
@@ -178,13 +192,13 @@ export function DesignStudio({
                     onClick={handleGenerate}
                     disabled={!prompt.trim() || isGenerating}
                     className={clsx(
-                      'block w-full rounded-full p-3 text-center text-sm font-medium text-white transition-opacity',
+                      "block w-full rounded-full p-3 text-center text-sm font-medium text-white transition-opacity",
                       !prompt.trim() || isGenerating
-                        ? 'cursor-not-allowed bg-blue-600 opacity-60'
-                        : 'bg-blue-600 hover:opacity-90'
+                        ? "cursor-not-allowed bg-blue-600 opacity-60"
+                        : "bg-blue-600 hover:opacity-90",
                     )}
                   >
-                    {isGenerating ? 'Generating Design...' : 'Generate Design'}
+                    {isGenerating ? "Generating Design..." : "Generate Design"}
                   </button>
                   {isGenerating && (
                     <button

@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { DesignStudio } from './design-studio';
-import { useProduct } from '../product-context';
-import type { CustomDesign } from 'lib/types/design';
+import { useState } from "react";
+import { DesignStudio } from "./design-studio";
+import { useProduct } from "../product-context";
+import type { CustomDesign } from "lib/types/design";
 
 interface CustomizationSectionProps {
   tshirtImageUrl: string;
 }
 
-export function CustomizationSection({ tshirtImageUrl }: CustomizationSectionProps) {
+export function CustomizationSection({
+  tshirtImageUrl,
+}: CustomizationSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { setCustomDesign } = useProduct();
 

@@ -1,8 +1,14 @@
-'use client';
+"use client";
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { createContext, useContext, useMemo, useOptimistic, useState } from 'react';
-import type { CustomDesign } from 'lib/types/design';
+import { useRouter, useSearchParams } from "next/navigation";
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useOptimistic,
+  useState,
+} from "react";
+import type { CustomDesign } from "lib/types/design";
 
 type ProductState = {
   [key: string]: string;
@@ -36,8 +42,8 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     getInitialState(),
     (prevState: ProductState, update: ProductState) => ({
       ...prevState,
-      ...update
-    })
+      ...update,
+    }),
   );
 
   const updateOption = (name: string, value: string) => {
@@ -58,18 +64,20 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
       updateOption,
       updateImage,
       customDesign,
-      setCustomDesign
+      setCustomDesign,
     }),
-    [state, customDesign]
+    [state, customDesign],
   );
 
-  return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
+  return (
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
+  );
 }
 
 export function useProduct() {
   const context = useContext(ProductContext);
   if (context === undefined) {
-    throw new Error('useProduct must be used within a ProductProvider');
+    throw new Error("useProduct must be used within a ProductProvider");
   }
   return context;
 }
