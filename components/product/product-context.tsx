@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { createContext, useContext, useMemo, useOptimistic } from 'react';
+import React, { createContext, useContext, useMemo, useOptimistic, useState } from 'react';
+import type { CustomDesign } from 'lib/types/design';
 
 type ProductState = {
   [key: string]: string;
@@ -13,12 +14,15 @@ type ProductContextType = {
   state: ProductState;
   updateOption: (name: string, value: string) => ProductState;
   updateImage: (index: string) => ProductState;
+  customDesign: CustomDesign | null;
+  setCustomDesign: (design: CustomDesign | null) => void;
 };
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export function ProductProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
+  const [customDesign, setCustomDesign] = useState<CustomDesign | null>(null);
 
   const getInitialState = () => {
     const params: ProductState = {};
@@ -52,9 +56,11 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     () => ({
       state,
       updateOption,
-      updateImage
+      updateImage,
+      customDesign,
+      setCustomDesign
     }),
-    [state]
+    [state, customDesign]
   );
 
   return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;

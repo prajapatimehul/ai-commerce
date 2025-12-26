@@ -3,8 +3,12 @@ import Price from 'components/price';
 import Prose from 'components/prose';
 import { Product } from 'lib/shopify/types';
 import { VariantSelector } from './variant-selector';
+import { CustomizationSection } from './customization';
 
 export function ProductDescription({ product }: { product: Product }) {
+  const isCustomizable = product.tags.includes('customizable');
+  const tshirtImageUrl = product.featuredImage.url;
+
   return (
     <>
       <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
@@ -23,6 +27,7 @@ export function ProductDescription({ product }: { product: Product }) {
           html={product.descriptionHtml}
         />
       ) : null}
+      {isCustomizable && <CustomizationSection tshirtImageUrl={tshirtImageUrl} />}
       <AddToCart product={product} />
     </>
   );

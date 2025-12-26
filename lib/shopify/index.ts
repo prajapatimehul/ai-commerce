@@ -226,7 +226,11 @@ export async function createCart(): Promise<Cart> {
 }
 
 export async function addToCart(
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: {
+    merchandiseId: string;
+    quantity: number;
+    attributes?: { key: string; value: string }[];
+  }[]
 ): Promise<Cart> {
   const cartId = (await cookies()).get('cartId')?.value!;
   const res = await shopifyFetch<ShopifyAddToCartOperation>({

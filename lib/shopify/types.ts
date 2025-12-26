@@ -34,6 +34,10 @@ export type CartItem = {
     }[];
     product: CartProduct;
   };
+  attributes?: {
+    key: string;
+    value: string;
+  }[];
 };
 
 export type Collection = ShopifyCollection & {
@@ -159,6 +163,10 @@ export type ShopifyAddToCartOperation = {
     lines: {
       merchandiseId: string;
       quantity: number;
+      attributes?: {
+        key: string;
+        value: string;
+      }[];
     }[];
   };
 };

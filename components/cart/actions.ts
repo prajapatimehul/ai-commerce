@@ -14,14 +14,25 @@ import { redirect } from 'next/navigation';
 
 export async function addItem(
   prevState: any,
-  selectedVariantId: string | undefined
+  payload: {
+    selectedVariantId: string | undefined;
+    attributes?: { key: string; value: string }[];
+  }
 ) {
+  const { selectedVariantId, attributes } = payload;
+
   if (!selectedVariantId) {
     return 'Error adding item to cart';
   }
 
   try {
-    await addToCart([{ merchandiseId: selectedVariantId, quantity: 1 }]);
+    await addToCart([
+      {
+        merchandiseId: selectedVariantId,
+        quantity: 1,
+        ...(attributes && { attributes })
+      }
+    ]);
     revalidateTag(TAGS.cart, 'seconds');
   } catch (e) {
     return 'Error adding item to cart';
